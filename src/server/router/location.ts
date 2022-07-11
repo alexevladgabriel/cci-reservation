@@ -8,6 +8,16 @@ export const locationRouter = createRouter()
             return await ctx.prisma.location.findMany();
         },
     })
+    .query("get-one", {
+        input: z.object({
+            id: z.string(),
+        }),
+        async resolve({ ctx, input }) {
+            return await ctx.prisma.location.findFirstOrThrow({
+                where: { id: input.id },
+            });
+        }
+    })
     .mutation("create-location", {
         input: z.object({
             name: z.string(),
